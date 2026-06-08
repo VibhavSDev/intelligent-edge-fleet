@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+*.pkl
+*.json
+!package.json
+
+# Environment variables (Crucial for security)
+.env
+.env.local
