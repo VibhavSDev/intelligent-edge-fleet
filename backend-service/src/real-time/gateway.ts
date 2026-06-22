@@ -1,5 +1,6 @@
 import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
+import redisClient from '../config/redis.js';
 
 export const initWebSocketGateway = (server: HttpServer) => {
     const io = new Server(server, {
@@ -18,6 +19,10 @@ export const initWebSocketGateway = (server: HttpServer) => {
                 if (!vehicle_id || !lat || !lng) return;
 
                 console.log(`[TELEMETRY] Vehicle ${vehicle_id} -> Lat: ${lat}, Lng: ${lng}`);
+
+                await redisClient.geoAdd('fleet-locations', { longitude: lng, latitude: lat, member: vehicle_id });
+
+                await redisClient.hSet('fleet:last_seen', vehicle_id, timestamp.toString());
 
                 io.emit('fleet-update', { vehicle_id, lat, lng, timestamp });
             } catch (error) {
