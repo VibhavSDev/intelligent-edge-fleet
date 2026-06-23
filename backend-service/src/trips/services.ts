@@ -28,6 +28,34 @@ export class TripService {
                 throw new Error('No available IDLE emergency vehicles within proximity.');
             }
 
+            let predictedEtaSeconds = 900;
+            const mlServiceUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+            const weatherCondition = 'CLEAR';
+
+            try {
+                const response = await fetch(`${mlServiceUrl}/predict-eta`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pickup_lat: pickupLat,
+                        pickup_lng: pickupLng,
+                        dropoff_lat: dropoffLat,
+                        dropoff_lng: dropoffLng,
+                        weather_condition: weatherCondition
+                    })
+                });
+
+                if(response.ok) {
+                    const mlData = await response.json();
+                    predictedEtaSeconds = mlData.predicted_duration_seconds;
+                    console.log(`AI Inference Success: Predicted duration is ${predictedEtaSeconds}s (${mlData.predicted_minutes} mins)`);
+                } else {
+                    console.warn(`ML Service responded with status ${response.status}. Using baseline fallback.`);
+                }
+            } catch (mlError) {
+                console.error('Failed to reach ML Inference service cluster. Falling back to baseline.', mlError);
+            }
+
             await client.query('BEGIN');
 
             await client.query(
@@ -42,8 +70,8 @@ export class TripService {
                 'EN_ROUTE',
                 ST_SetSRID(ST_MakePoint($2, $3), 4326),
                 ST_SetSRID(ST_MakePoint($4, $5), 4326),
-                'CLEAR',
-                900 -- Temporary static placeholder
+                $6,
+                $7
                 ) RETURNING *;
             `;
             
@@ -52,7 +80,9 @@ export class TripService {
                 pickupLng,
                 pickupLat,
                 dropoffLng,
-                dropoffLat
+                dropoffLat,
+                weatherCondition,
+                predictedEtaSeconds
             ]);
 
             await client.query('COMMIT');
