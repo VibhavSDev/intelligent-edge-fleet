@@ -2,14 +2,16 @@ import express from "express";
 import { createServer } from "http";
 import dotenv from "dotenv";
 import { initWebSocketGateway } from "./real-time/gateway.js";
-import vehicleRoutes from "./vehicles/routes.js";
+import vehiclesRouter from "./vehicles/routes.js";
+import tripsRouter from "./trips/routes.js";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/vehicles', vehiclesRouter);
+app.use('/api/trips', tripsRouter);
 
 const httpServer = createServer(app);
 
