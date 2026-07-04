@@ -4,8 +4,8 @@ import { ControlSidebar } from './components/ControlSidebar';
 import { MapView } from './components/MapView';
 import { useWebScokets } from './hooks/useWebSockets';
 import { FleetInventoryView } from './components/FleetInventoryView';
+import { AnalyticsView } from './components/AnalyticsView';
 
-const AnalyticsView = () => <div style={{ padding: '20px' }}><h2>📊 AI Insights & System KPIs</h2><p>Telemetry metrics, throughput clocks, and charts loading...</p></div>;
 const IncidentLogsView = () => <div style={{ padding: '20px' }}><h2>📝 Incident Log History</h2><p>Audit trail logs directly from PostgreSQL loading...</p></div>;
 
 function App() {
