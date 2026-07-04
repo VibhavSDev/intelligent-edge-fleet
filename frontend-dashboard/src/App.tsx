@@ -3,8 +3,8 @@ import { NavigationLayout } from './components/NavigationLayout';
 import { ControlSidebar } from './components/ControlSidebar';
 import { MapView } from './components/MapView';
 import { useWebScokets } from './hooks/useWebSockets';
+import { FleetInventoryView } from './components/FleetInventoryView';
 
-const FleetInventoryView = () => <div style={{ padding: '20px' }}><h2>🚚 Fleet Inventory Management</h2><p>Database CRUD management table loading...</p></div>;
 const AnalyticsView = () => <div style={{ padding: '20px' }}><h2>📊 AI Insights & System KPIs</h2><p>Telemetry metrics, throughput clocks, and charts loading...</p></div>;
 const IncidentLogsView = () => <div style={{ padding: '20px' }}><h2>📝 Incident Log History</h2><p>Audit trail logs directly from PostgreSQL loading...</p></div>;
 
