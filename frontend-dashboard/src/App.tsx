@@ -5,8 +5,7 @@ import { MapView } from './components/MapView';
 import { useWebScokets } from './hooks/useWebSockets';
 import { FleetInventoryView } from './components/FleetInventoryView';
 import { AnalyticsView } from './components/AnalyticsView';
-
-const IncidentLogsView = () => <div style={{ padding: '20px' }}><h2>📝 Incident Log History</h2><p>Audit trail logs directly from PostgreSQL loading...</p></div>;
+import { IncidentLogsView } from './components/IncidentLogsView';
 
 function App() {
   const [currentTab, setCurrentTab] = useState<string>('live');
